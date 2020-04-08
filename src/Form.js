@@ -53,6 +53,10 @@ const Form = props => {
       newNameErrorMessage = "Name cannot be empty."
       isError = true;
     }
+    if (name && name.split(" ").length !== 2) {
+      newNameErrorMessage = "Name format should be '[first name][space][last name]'."
+      isError = true;
+    }
     if (!email) {
       newEmailErrorMessage = "Email cannot be empty."
       isError = true;

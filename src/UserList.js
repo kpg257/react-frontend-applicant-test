@@ -16,6 +16,9 @@ const useStyles = makeStyles({
   },
   rightButton: {
     float: "right"
+  },
+  greenText: {
+    color: "green"
   }
 });
 
@@ -53,10 +56,10 @@ const UserList = props => {
       </Typography>
       <List>
         {usersToDisplay.map(user => {
-          let {name} = user;
+          let {name, isBiz} = user;
           return (
             <ListItem button>
-              <ListItemText primary={name}/>
+              <ListItemText primary={name} className={`${isBiz && classes.greenText}`}/>
             </ListItem>
           )
         })}

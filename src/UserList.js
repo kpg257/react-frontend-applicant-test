@@ -56,10 +56,10 @@ const UserList = props => {
         List of Users
       </Typography>
       <List>
-        {usersToDisplay.map(user => {
-          let {name, isBiz} = user;
+        {usersToDisplay.map((user, index) => {
+          const {name, isBiz} = user;
           return (
-            <ListItem button>
+            <ListItem button key={index}>
               <ListItemText primary={name} className={`${isBiz && classes.greenText}`}/>
             </ListItem>
           )

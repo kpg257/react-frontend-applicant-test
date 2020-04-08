@@ -8,29 +8,51 @@ const Home = () => {
     users: []
   });
 
+  const getUserObject = (name, email) => {
+    return {
+      name,
+      isBiz: email.endsWith(".biz")
+    }
+  };
+
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then(response => response.json())
       .then(response => {
-        let users = response.map(user => {
-          let {name, email} = user;
-          return {
-            name,
-            isBiz: email.endsWith(".biz")
-          };
+        const users = response.map(user => {
+          const {name, email} = user;
+          return getUserObject(name, email);
         });
-        users.sort((a, b) => a.name < b.name);
+        users.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
         setState({users});
       })
       .catch(error => console.log(error));
-  });
+  }, []);
 
-  let {users} = state;
+  const {users} = state;
+
+  const onAddUserClicked = (name, email) => {
+    let isAdded = false;
+    const newUsers = [];
+    users.forEach(user => {
+      if (!isAdded && name.toLowerCase() < user.name.toLowerCase()) {
+        newUsers.push(getUserObject(name, email));
+        isAdded = true;
+      }
+      newUsers.push(user);
+    });
+    if (!isAdded) {
+      newUsers.push(getUserObject(name, email));
+    }
+    setState({
+      users: newUsers
+    });
+  };
 
   return (
     <div>
       <UserList {...{users}}/>
-      <Form/>
+      <Form {...{onAddUserClicked}}/>
     </div>
   );
 

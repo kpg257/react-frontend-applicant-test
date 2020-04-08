@@ -12,10 +12,11 @@ const START_PAGE = 1;
 
 const useStyles = makeStyles({
   mainContainer: {
-    margin: "20px 25%"
+    margin: "20px",
+    textAlign: "center"
   },
-  rightButton: {
-    float: "right"
+  actionButton: {
+    margin: "10px"
   },
   greenText: {
     color: "green"
@@ -70,6 +71,7 @@ const UserList = props => {
           <Button
             color="primary"
             variant="contained"
+            className={classes.actionButton}
             onClick={onPreviousButtonClicked}>
             Previous
           </Button>
@@ -79,7 +81,7 @@ const UserList = props => {
           <Button
             color="primary"
             variant="contained"
-            className={classes.rightButton}
+            className={classes.actionButton}
             onClick={onNextButtonClicked}>
             Next
           </Button>}

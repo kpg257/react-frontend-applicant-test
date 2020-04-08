@@ -1,11 +1,17 @@
 import React, {useState, useEffect} from 'react';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 import UserList from "./UserList";
 import Form from "./Form";
 
 const Home = () => {
 
   const [state, setState] = useState({
-    users: []
+    users: [],
+    showSnackbar: false
   });
 
   const getUserObject = (name, email) => {
@@ -24,12 +30,15 @@ const Home = () => {
           return getUserObject(name, email);
         });
         users.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-        setState({users});
+        setState({
+          ...state,
+          users
+        });
       })
       .catch(error => console.log(error));
   }, []);
 
-  const {users} = state;
+  const {users, showSnackbar} = state;
 
   const onAddUserClicked = (name, email) => {
     let isAdded = false;
@@ -45,7 +54,16 @@ const Home = () => {
       newUsers.push(getUserObject(name, email));
     }
     setState({
-      users: newUsers
+      ...state,
+      users: newUsers,
+      showSnackbar: true
+    });
+  };
+
+  const onSnackbarCloseClicked = () => {
+    setState({
+      ...state,
+      showSnackbar: false
     });
   };
 
@@ -53,6 +71,23 @@ const Home = () => {
     <div>
       <UserList {...{users}}/>
       <Form {...{onAddUserClicked}}/>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'middle',
+        }}
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={onSnackbarCloseClicked}
+        message="New User Added"
+        action={
+          <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={onSnackbarCloseClicked}>
+              <CloseIcon fontSize="small"/>
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </div>
   );
 
